@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="pt-AO">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hospital do Ramiros - Sistema de Gestão Hospitalar</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="login-page">
+    <!-- Background com efeito médico animado -->
+    <div class="login-bg">
+        <div class="bg-overlay"></div>
+        <div class="bg-pattern">
+            <div class="orb-1"></div>
+            <div class="orb-2"></div>
+            <div class="orb-3"></div>
+        </div>
+    </div>
+
+    <!-- Container Principal -->
+    <div class="login-wrapper">
+        <div class="login-container">
+            <!-- Logo e Título -->
+            <div class="login-header">
+                <div class="logo-icon">
+                    <i class="fas fa-hospital-user"></i>
+                </div>
+                <h1 class="logo-title">Hospital do Ramiros</h1>
+                <p class="logo-subtitle">Sistema de Gestão Hospitalar — Pronto-Socorro 24h</p>
+                <div class="status-badge">
+                    <i class="fas fa-circle"></i>
+                    <span>Sistema Online</span>
+                </div>
+            </div>
+
+            <!-- Formulário de Login -->
+            <form id="loginForm" class="login-form">
+                <div class="input-group">
+                    <div class="input-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="input-field">
+                        <input type="text" id="usuario" name="usuario" required autocomplete="username">
+                        <label for="usuario">Usuário</label>
+                        <span class="input-line"></span>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <div class="input-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <div class="input-field">
+                        <input type="password" id="senha" name="senha" required autocomplete="current-password">
+                        <label for="senha">Senha</label>
+                        <span class="input-line"></span>
+                        <button type="button" class="toggle-password" onclick="togglePassword()">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="login-options">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="rememberMe">
+                        <span class="checkbox-custom"></span>
+                        <span class="checkbox-text">Manter conectado</span>
+                    </label>
+                    <a href="#" class="forgot-password">Esqueceu a senha?</a>
+                </div>
+
+                <button type="submit" class="btn-login">
+                    <span>Entrar no Sistema</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+
+                <div class="login-footer">
+                    <div class="divider">
+                        <span>Acesso Seguro</span>
+                    </div>
+                    <div class="security-badges">
+                        <div class="security-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>SSL Secure</span>
+                        </div>
+                        <div class="security-item">
+                            <i class="fas fa-lock"></i>
+                            <span>Dados Criptografados</span>
+                        </div>
+                        <div class="security-item">
+                            <i class="fas fa-clock"></i>
+                            <span>Session Timeout: 30min</span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+
+        </div>
+
+        <!-- Informações Institucionais -->
+        <div class="login-info">
+            <div class="info-card">
+                <i class="fas fa-ambulance"></i>
+                <h3>Atendimento 24h</h3>
+                <p>Pronto-socorro do Hospital do Ramiros — Luanda, Angola</p>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-chart-line"></i>
+                <h3>Gestão Eficiente</h3>
+                <p>Controle completo de triagem, atendimentos e leitos — Angola</p>
+            </div>
+            <div class="info-card">
+                <i class="fas fa-shield-virus"></i>
+                <h3>Segurança Total</h3>
+                <p>Protocolos avançados — Lei de Proteção de Dados (Angola)</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="medical-spinner">
+                <div class="pulse-ring"></div>
+                <i class="fas fa-heartbeat"></i>
+            </div>
+            <p>Autenticando...</p>
+            <small>Acessando sistema seguro</small>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // Toggle password visibility
+        function togglePassword() {
+            const passwordInput = document.getElementById('senha');
+            const toggleBtn = document.querySelector('.toggle-password i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleBtn.classList.remove('fa-eye');
+                toggleBtn.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                toggleBtn.classList.remove('fa-eye-slash');
+                toggleBtn.classList.add('fa-eye');
+            }
+        }
+
+        // Animated input labels
+        document.querySelectorAll('.input-field input').forEach(input => {
+            input.addEventListener('focus', function() {
+                this.parentElement.classList.add('focused');
+            });
+            
+            input.addEventListener('blur', function() {
+                if (!this.value) {
+                    this.parentElement.classList.remove('focused');
+                }
+            });
+            
+            // Check if input has value on load
+            if (input.value) {
+                input.parentElement.classList.add('focused');
+            }
+        });
+
+        // Handle form submission
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const usuario = document.getElementById('usuario').value;
+            const senha = document.getElementById('senha').value;
+            
+            if (!usuario || !senha) {
+                showToast('Preencha todos os campos', 'error');
+                return;
+            }
+            
+            showLoading();
+            
+            const formData = new FormData(this);
+            try {
+                const response = await fetch('api/login.php', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok && data.success) {
+                    // Save CSRF token and remember me option
+                    if (data.csrf_token) {
+                        localStorage.setItem('csrf_token', data.csrf_token);
+                    }
+                    if (document.getElementById('rememberMe').checked) {
+                        localStorage.setItem('rememberUser', usuario);
+                    } else {
+                        localStorage.removeItem('rememberUser');
+                    }
+                    
+                    showToast('Login realizado com sucesso! Redirecionando...', 'success');
+                    
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.php';
+                    }, 1000);
+                } else {
+                    showToast(data.erro || 'Usuário ou senha inválidos', 'error');
+                    shakeForm();
+                }
+            } catch (err) {
+                console.error('Erro:', err);
+                showToast('Erro de conexão com o servidor. Verifique sua rede.', 'error');
+            } finally {
+                hideLoading();
+            }
+        });
+
+        // Load remembered user
+        function loadRememberedUser() {
+            const rememberedUser = localStorage.getItem('rememberUser');
+            if (rememberedUser) {
+                document.getElementById('usuario').value = rememberedUser;
+                document.getElementById('rememberMe').checked = true;
+                // Trigger animation
+                document.getElementById('usuario').parentElement.classList.add('focused');
+            }
+        }
+
+        // Shake animation for error
+        function shakeForm() {
+            const form = document.querySelector('.login-container');
+            form.style.animation = 'shake 0.5s ease';
+            setTimeout(() => {
+                form.style.animation = '';
+            }, 500);
+        }
+
+        // Loading functions
+        function showLoading() {
+            document.getElementById('loadingOverlay').classList.add('active');
+        }
+        
+        function hideLoading() {
+            document.getElementById('loadingOverlay').classList.remove('active');
+        }
+
+        // Toast notification system
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            
+            const icons = {
+                success: 'fa-check-circle',
+                error: 'fa-exclamation-circle',
+                info: 'fa-info-circle',
+                warning: 'fa-exclamation-triangle'
+            };
+            
+            toast.innerHTML = `
+                <i class="fas ${icons[type] || icons.info}"></i>
+                <div class="toast-content">
+                    <span>${message}</span>
+                </div>
+                <button class="toast-close" onclick="this.parentElement.remove()">
+                    <i class="fas fa-xmark"></i>
+                </button>
+            `;
+            
+            container.appendChild(toast);
+            
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (toast.parentElement) {
+                    toast.style.animation = 'slideOut 0.3s ease forwards';
+                    setTimeout(() => toast.remove(), 300);
+                }
+            }, 5000);
+        }
+
+        // Forgot password handler
+        document.querySelector('.forgot-password')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            showToast('Entre em contato com o administrador do sistema para recuperar sua senha.', 'info');
+        });
+
+        // Load remembered user on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            loadRememberedUser();
+            
+            // Add ripple effect to button
+            const btn = document.querySelector('.btn-login');
+            btn.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                ripple.classList.add('ripple');
+                this.appendChild(ripple);
+                
+                const x = e.clientX - e.target.offsetLeft;
+                const y = e.clientY - e.target.offsetTop;
+                
+                ripple.style.left = `${x}px`;
+                ripple.style.top = `${y}px`;
+                
+                setTimeout(() => {
+                    ripple.remove();
+                }, 600);
+            });
+        });
+    </script>
+
+    <style>
+        /* Estilos adicionais específicos para o login */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        @keyframes slideOut {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+        }
+        
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        }
+        
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        
+        .btn-login {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Melhorias no loading spinner médico */
+        .medical-spinner {
+            position: relative;
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .pulse-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00d4ff, #0099ff);
+            animation: pulse-ring 1.5s ease-out infinite;
+        }
+        
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1.5);
+                opacity: 0;
+            }
+        }
+        
+        .medical-spinner i {
+            font-size: 28px;
+            color: #00d4ff;
+            animation: heartbeat 1.5s ease infinite;
+            z-index: 1;
+        }
+        
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+    </style>
+</body>
+</html>
